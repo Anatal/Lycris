@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Troye Sivan - She's the Best | קריוקי מילה במילה</title>
+
+  <style>
+    
+    :root {
+      --bg: #0f111a;
+      --card-bg: #1a1d2e;
+      --accent: #ff2a6d;
+      --text: #e0e6ed;
+      --text-dim: #71788e;
+      --highlight: #ffe600;
+      --sung-word: #05d9e8;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 16px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 860px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .video-box {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      background: #000;
+    }
+    #player {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .lyrics-container {
+      position: relative;
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 24px 20px;
+      height: 360px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      direction: ltr;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    /* Dynamic bouncing ball */
+    #bouncing-ball {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent);
+      pointer-events: none;
+      transition: left 0.12s ease-out, top 0.12s ease-out;
+      transform: translate(-50%, -100%);
+      display: none;
+      z-index: 10;
+      animation: bounce 0.4s infinite alternate ease-in-out;
+    }
+    @keyframes bounce {
+      0% { transform: translate(-50%, -120%); }
+      100% { transform: translate(-50%, -180%); }
+    }
+    .verse-block {
+      padding: 14px 16px;
+      margin: 12px 0;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      transition: background 0.3s;
+    }
+    .verse-block.current-verse {
+      background: rgba(255, 42, 109, 0.08);
+      border-left: 3px solid var(--accent);
+    }
+    .words-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      font-size: 1.25rem;
+      line-height: 1.8;
+      font-weight: 500;
+    }
+    .word {
+      display: inline-block;
+      position: relative;
+      color: var(--text-dim);
+      transition: color 0.15s, transform 0.15s;
+    }
+    .word.passed {
+      color: var(--sung-word);
+    }
+    .word.active {
+      color: var(--highlight);
+      font-weight: 800;
+      transform: scale(1.15);
+      text-shadow: 0 0 10px rgba(255, 230, 0, 0.5);
+    }
+    .he-trans {
+      margin-top: 6px;
+      font-size: 0.95rem;
+      color: #9299a9;
+      direction: rtl;
+      text-align: right;
+      font-weight: normal;
+    }
+    .verse-block.current-verse .he-trans {
+      color: #ffffff;
+    }
+  
+  </style>
+
+  
+</head>
+<body>
+  <div class="container">
+    <h2 style="text-align: center; color: var(--highlight); margin: 0;">
+      🎤 She’s the Best – Troye Sivan (מעקב מילה במילה)
+    </h2>
+
+    <div class="video-box">
+      <div id="player"></div>
+    </div>
+
+    <div class="lyrics-container" id="lyricsBox">
+      <div id="bouncing-ball"></div>
+    </div>
+  </div>
+
+  <script>
+    
+    const songData = [
+      {
+        he: "הולכת ברחוב עם סיגריה דקה קטנה",
+        words: [
+          { text: "SHE’S", t: 5.0 }, { text: "WALKING", t: 5.4 }, { text: "DOWN", t: 6.0 },
+          { text: "THE", t: 6.3 }, { text: "STREET", t: 6.6 }, { text: "WITH", t: 7.1 },
+          { text: "HER", t: 7.3 }, { text: "LITTLE", t: 7.6 }, { text: "THIN", t: 8.0 }, { text: "CIGARETTE", t: 8.3 }
+        ]
+      },
+      {
+        he: "חיוך גדול, וכתם על השמלה שלה",
+        words: [
+          { text: "GREAT", t: 9.3 }, { text: "SMILE,", t: 9.8 }, { text: "AND", t: 11.2 },
+          { text: "A", t: 11.5 }, { text: "CUM", t: 11.8 }, { text: "STAIN", t: 12.2 },
+          { text: "ON", t: 12.6 }, { text: "HER", t: 12.9 }, { text: "DRESS", t: 13.3 }
+        ]
+      },
+      {
+        he: "עובדת כדי-ג'יי מרביעי ועד שני",
+        words: [
+          { text: "DJS", t: 17.0 }, { text: "FROM", t: 17.7 }, { text: "WEDNESDAY", t: 18.2 },
+          { text: "TO", t: 19.1 }, { text: "MONDAY", t: 19.5 }
+        ]
+      },
+      {
+        he: "אל תבקשו, היא לא מקבלת שום בקשות לשירים",
+        words: [
+          { text: "DON’T", t: 21.0 }, { text: "ASK,", t: 21.4 }, { text: "SHE’S", t: 22.2 },
+          { text: "NOT", t: 22.6 }, { text: "TAKING", t: 23.0 }, { text: "ANY", t: 23.5 },
+          { text: "FUCKING", t: 24.1 }, { text: "REQUESTS", t: 24.7 }
+        ]
+      },
+      {
+        he: "שאיפה מהירה, סומק בלחי, שפתיים מודגשות",
+        words: [
+          { text: "QUICK", t: 29.0 }, { text: "DRAG,", t: 29.5 }, { text: "A", t: 30.1 },
+          { text: "ROUGE", t: 30.4 }, { text: "CHEEK,", t: 30.9 }, { text: "A", t: 31.5 },
+          { text: "BLUSH", t: 31.9 }, { text: "LIP", t: 32.4 }
+        ]
+      },
+      {
+        he: "אייליינר בעיניים וקונטור",
+        words: [
+          { text: "EYELINER", t: 33.8 }, { text: "IN", t: 34.6 }, { text: "HER", t: 34.9 },
+          { text: "WATERLINE", t: 35.3 }, { text: "AND", t: 36.5 }, { text: "SOME", t: 37.0 },
+          { text: "CONTOUR", t: 37.5 }, { text: "ON", t: 38.3 }, { text: "HER", t: 38.6 }, { text: "TITS", t: 39.0 }
+        ]
+      },
+      {
+        he: "ציפור לילה ובאיזשהו אופן גם משכימת קום",
+        words: [
+          { text: "NIGHT", t: 41.0 }, { text: "OWL", t: 41.5 }, { text: "AND", t: 42.1 },
+          { text: "SOMEHOW", t: 42.5 }, { text: "AN", t: 43.1 }, { text: "EARLY", t: 43.4 }, { text: "BIRD", t: 43.8 }
+        ]
+      },
+      {
+        he: "היא פשוט נשארת עייפה באופן תמידי",
+        words: [
+          { text: "SHE", t: 44.8 }, { text: "KIND", t: 45.2 }, { text: "OF", t: 45.6 },
+          { text: "JUST", t: 45.9 }, { text: "STAYS", t: 46.4 }, { text: "PERPETUALLY", t: 47.1 }, { text: "TIRED", t: 48.0 }
+        ]
+      },
+      {
+        he: "הבחורה הזו! הבחורה הזו!",
+        words: [
+          { text: "THAT", t: 54.0 }, { text: "GIRL,", t: 54.5 }, { text: "THAT", t: 55.4 },
+          { text: "GIRL", t: 55.9 }, { text: "THAT", t: 56.9 }, { text: "GIRL,", t: 57.4 },
+          { text: "THAT", t: 58.3 }, { text: "GIRL", t: 58.8 }
+        ]
+      },
+      {
+        he: "וואו, הבחורה הזו!",
+        words: [
+          { text: "THAT", t: 60.0 }, { text: "GIRL,", t: 60.5 }, { text: "THAT", t: 61.4 },
+          { text: "GIRL", t: 61.9 }, { text: "WOW,", t: 63.0 }, { text: "THAT", t: 63.8 }, { text: "GIRL", t: 64.3 }
+        ]
+      },
+      {
+        he: "הבחורה הזו! הבחורה הזו!",
+        words: [
+          { text: "THAT", t: 65.5 }, { text: "GIRL,", t: 66.0 }, { text: "THAT", t: 66.9 },
+          { text: "GIRL", t: 67.4 }, { text: "THAT", t: 68.4 }, { text: "GIRL,", t: 68.9 },
+          { text: "THAT", t: 69.8 }, { text: "GIRL", t: 70.3 }
+        ]
+      },
+      {
+        he: "וואו, היא פשוט הכי טובה!",
+        words: [
+          { text: "WOW,", t: 71.4 }, { text: "THAT", t: 72.2 }, { text: "GIRL", t: 72.7 },
+          { text: "SHE’S", t: 74.2 }, { text: "THE", t: 74.8 }, { text: "BEST", t: 75.3 }
+        ]
+      },
+      {
+        he: "דירת שותפים, השותפה היא החברה הכי טובה",
+        words: [
+          { text: "SHAREHOUSE,", t: 82.0 }, { text: "HER", t: 82.7 }, { text: "HOUSEMATE’S", t: 83.1 },
+          { text: "HER", t: 83.9 }, { text: "BEST", t: 84.3 }, { text: "FRIEND", t: 84.7 }
+        ]
+      },
+      {
+        he: "לפעמים הן חולקות את בן הזוג שלה",
+        words: [
+          { text: "SOMETIMES", t: 85.3 }, { text: "THEY", t: 86.0 }, { text: "MIGHT", t: 86.4 },
+          { text: "SHARE", t: 86.9 }, { text: "HER", t: 87.4 }, { text: "BOYFRIEND", t: 87.8 }
+        ]
+      },
+      {
+        he: "מכינה לוחות השראה לעתיד שנראה מעולה",
+        words: [
+          { text: "HELL", t: 89.2 }, { text: "YEAH", t: 89.6 }, { text: "MOOD", t: 92.0 },
+          { text: "BOARDS", t: 92.5 }, { text: "HER", t: 93.0 }, { text: "FUTURE", t: 93.4 },
+          { text: "IT", t: 94.6 }, { text: "LOOKS", t: 95.0 }, { text: "GOOD", t: 95.5 }
+        ]
+      },
+      {
+        he: "הפסיקה להביט לאחור, מביטה רק קדימה",
+        words: [
+          { text: "SHE’S", t: 97.0 }, { text: "DONE", t: 97.5 }, { text: "LOOKING", t: 98.0 },
+          { text: "BACK,", t: 98.6 }, { text: "SHE’S", t: 99.5 }, { text: "ONLY", t: 100.0 },
+          { text: "LOOKING", t: 100.5 }, { text: "AHEAD", t: 101.2 }
+        ]
+      },
+      {
+        he: "יפה, מצחיקה, יודעת להילחם",
+        words: [
+          { text: "PRETTY,", t: 105.0 }, { text: "FUNNY,", t: 106.2 }, { text: "CAN", t: 107.5 }, { text: "FIGHT", t: 108.2 }
+        ]
+      },
+      {
+        he: "תמיד ידעה שיש בה משהו מיוחד בפנים",
+        words: [
+          { text: "SHE", t: 110.0 }, { text: "ALWAYS", t: 110.5 }, { text: "KNEW", t: 111.2 },
+          { text: "SHE", t: 111.7 }, { text: "HAD", t: 112.2 }, { text: "SOMETHING", t: 112.8 },
+          { text: "SPECIAL", t: 113.6 }, { text: "INSIDE", t: 114.5 }
+        ]
+      },
+      {
+        he: "מעמידה במקום טרולים ברשת כשהיא צריכה להירגע",
+        words: [
+          { text: "SHE", t: 117.0 }, { text: "TAKES", t: 117.4 }, { text: "DOWN", t: 117.9 },
+          { text: "AN", t: 118.3 }, { text: "INCEL", t: 118.7 }, { text: "ON", t: 119.3 },
+          { text: "THE", t: 119.6 }, { text: "INTERNET", t: 120.0 }, { text: "WHEN", t: 121.2 },
+          { text: "SHE", t: 121.6 }, { text: "NEEDS", t: 122.0 }, { text: "JUST", t: 122.5 },
+          { text: "A", t: 122.9 }, { text: "LITTLE", t: 123.3 }, { text: "UNWIND", t: 124.0 }
+        ]
+      },
+      {
+        he: "הבחורה הזו! הבחורה הזו!",
+        words: [
+          { text: "THAT", t: 130.0 }, { text: "GIRL,", t: 130.5 }, { text: "THAT", t: 131.4 },
+          { text: "GIRL", t: 131.9 }, { text: "THAT", t: 132.9 }, { text: "GIRL,", t: 133.4 },
+          { text: "THAT", t: 134.3 }, { text: "GIRL", t: 134.8 }
+        ]
+      },
+      {
+        he: "וואו, היא פשוט הכי טובה!",
+        words: [
+          { text: "WOW,", t: 136.0 }, { text: "THAT", t: 136.8 }, { text: "GIRL", t: 137.3 },
+          { text: "SHE’S", t: 148.5 }, { text: "THE", t: 149.0 }, { text: "BEST", t: 149.6 }
+        ]
+      },
+      {
+        he: "הלב דופק בחזה מרוב התרגשות והערצה",
+        words: [
+          { text: "(SHE’S", t: 164.0 }, { text: "THE", t: 164.4 }, { text: "BEST,", t: 164.8 },
+          { text: "HEARTBEAT", t: 165.4 }, { text: "BUMPING", t: 166.2 }, { text: "IN", t: 166.8 },
+          { text: "MY", t: 167.1 }, { text: "CHEST)", t: 167.5 }
+        ]
+      },
+      {
+        he: "סיום השיר",
+        words: [
+          { text: "[MUSIC", t: 250.0 }, { text: "ENDS]", t: 251.5 }
+        ]
+      }
+    ];
+
+    // Flatten all words with references
+    const allWords = [];
+    const box = document.getElementById('lyricsBox');
+    const ball = document.getElementById('bouncing-ball');
+
+    songData.forEach((verse, vIdx) => {
+      const vDiv = document.createElement('div');
+      vDiv.className = 'verse-block';
+      vDiv.id = `verse-${vIdx}`;
+
+      const row = document.createElement('div');
+      row.className = 'words-row';
+
+      verse.words.forEach((w, wIdx) => {
+        const span = document.createElement('span');
+        span.className = 'word';
+        span.id = `w-${vIdx}-${wIdx}`;
+        span.textContent = w.text;
+        row.appendChild(span);
+
+        allWords.push({
+          time: w.t,
+          element: span,
+          verseElement: vDiv
+        });
+      });
+
+      vDiv.appendChild(row);
+
+      const heDiv = document.createElement('div');
+      heDiv.className = 'he-trans';
+      heDiv.textContent = verse.he;
+      vDiv.appendChild(heDiv);
+
+      box.appendChild(vDiv);
+    });
+
+    // YouTube API Setup
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        videoId: 'mFA1P8ZzoLw',
+        playerVars: {
+          'playsinline': 1,
+          'rel': 0,
+          'modestbranding': 1,
+          'origin': window.location.origin || '*'
+        },
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    let loopId = null;
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        ball.style.display = 'block';
+        if (!loopId) loopId = requestAnimationFrame(renderLoop);
+      } else {
+        cancelAnimationFrame(loopId);
+        loopId = null;
+      }
+    }
+
+    let activeWordIndex = -1;
+    function renderLoop() {
+      if (player && typeof player.getCurrentTime === 'function') {
+        const currentTime = player.getCurrentTime();
+
+        let idx = -1;
+        for (let i = 0; i < allWords.length; i++) {
+          if (currentTime >= allWords[i].time) {
+            idx = i;
+          } else {
+            break;
+          }
+        }
+
+        if (idx !== activeWordIndex && idx !== -1) {
+          // Update passed & active styles
+          allWords.forEach((item, i) => {
+            if (i < idx) {
+              item.element.className = 'word passed';
+            } else if (i === idx) {
+              item.element.className = 'word active';
+            } else {
+              item.element.className = 'word';
+            }
+          });
+
+          // Position Ball over active word
+          const activeEl = allWords[idx].element;
+          const activeVerse = allWords[idx].verseElement;
+
+          // Highlight current block
+          document.querySelectorAll('.verse-block').forEach(vb => vb.classList.remove('current-verse'));
+          activeVerse.classList.add('current-verse');
+
+          // Position calculations relative to scroll container
+          const boxRect = box.getBoundingClientRect();
+          const wordRect = activeEl.getBoundingClientRect();
+
+          const left = (wordRect.left - boxRect.left) + (wordRect.width / 2) + box.scrollLeft;
+          const top = (wordRect.top - boxRect.top) + box.scrollTop - 4;
+
+          ball.style.left = `${left}px`;
+          ball.style.top = `${top}px`;
+
+          // Auto-scroll block into view smoothly
+          activeVerse.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+          activeWordIndex = idx;
+        }
+      }
+      loopId = requestAnimationFrame(renderLoop);
+    }
+  
+  </script>
+</body>
+</html>
